@@ -13,3 +13,12 @@ def teacher_conflict(existing_entries, new_entry):
             if new_teachers & existing_teachers:
                 return True
     return False
+
+def group_conflict(existing_entries, new_entry):
+    new_group_ids = {g.id for g in new_entry.groups}
+    for e in existing_entries:
+        if e.time_slot_id == new_entry.time_slot_id:
+            existing_group_ids = {g.id for g in e.groups}
+            if new_group_ids & existing_group_ids:
+                return True
+    return False
