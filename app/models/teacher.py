@@ -1,4 +1,4 @@
-from app import db
+from app.extension import db
 
 class Teacher(db.Model):
     __tablename__ = 'teachers'
@@ -6,4 +6,7 @@ class Teacher(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
 
-    disciplines = db.relationship('Discipline', back_populates='teacher')
+    discipline_links = db.relationship('DisciplineTeacher', back_populates='teacher')
+    
+    def to_dict(self):
+        return {'id': self.id, 'name': self.name}   
