@@ -5,6 +5,7 @@ class Group(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
     year_id = db.Column(db.Integer, db.ForeignKey('years.id'), nullable=False)
+    semian = db.Column(db.String, nullable=False)
 
     students = db.relationship('Student', back_populates='group', cascade='all, delete-orphan')
     disciplines = db.relationship('Discipline', back_populates='group', cascade='all, delete-orphan')

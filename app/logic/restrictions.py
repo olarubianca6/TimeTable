@@ -6,4 +6,6 @@ def match_room_class_type(room_type, class_type):
         return room_type == "course"
     elif class_type == "laboratory":
         return room_type == "lab"
-    return True
+    elif class_type == "seminar":
+        return room_type in ["course", "lab"]
+    return False
