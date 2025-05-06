@@ -6,6 +6,18 @@ from app.logic.restrictions import valid_class_time, match_room_class_type
 
 class_session_bp = Blueprint('class_session', __name__)
 
+def check_conflicts(existing_class_sessions, class_session):
+    if room_conflict(existing_class_sessions, class_session):
+        return {'error': 'Room conflict'}, 400
+
+    if teacher_conflict(existing_class_sessions, class_session):
+        return {'error': 'Teacher conflict'}, 400
+
+    if group_conflict(existing_class_sessions, class_session):
+        return {'error': 'Group conflict'}, 400
+
+    return None, None
+
 @class_session_bp.route('/class_session/<int:id>', methods=['GET'])
 def get_class_session(id):
     class_session = ClassSession.query.get(id)
@@ -60,11 +72,9 @@ def add_class_session():
         class_type=class_type
     )
 
-    if room_conflict(existing_class_sessions, new_class_session):
-        return jsonify({'error': 'Room conflict'}), 400
-
-    if teacher_conflict(existing_class_sessions, new_class_session):
-        return jsonify({'error': 'Teacher conflict'}), 400
+    conflict_response, status_code = check_conflicts(existing_class_sessions, new_class_session)
+    if conflict_response:
+        return jsonify(conflict_response), status_code
 
     db.session.add(new_class_session)
     db.session.commit()
@@ -94,11 +104,9 @@ def edit_class_session(id):
         return jsonify({'error': 'Room type does not match class type'}), 400
 
     existing_class_sessions = ClassSession.query.all()
-    if room_conflict(existing_class_sessions, class_session):
-        return jsonify({'error': 'Room conflict'}), 400
-
-    if teacher_conflict(existing_class_sessions, class_session):
-        return jsonify({'error': 'Teacher conflict'}), 400
+    conflict_response, status_code = check_conflicts(existing_class_sessions, class_session)
+    if conflict_response:
+        return jsonify(conflict_response), status_code
 
     db.session.commit()
 
