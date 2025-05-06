@@ -1,4 +1,4 @@
-from app import db
+from app.extension import db
 
 class Discipline(db.Model):
     __tablename__ = 'disciplines'
@@ -11,5 +11,8 @@ class Discipline(db.Model):
     teacher_links = db.relationship('DisciplineTeacher', back_populates='discipline')
     classes = db.relationship('ClassSession', backref='discipline', cascade='all, delete-orphan')
 
-    year = db.relationship('Year', backref='disciplines')
-    group = db.relationship('Group', backref='disciplines')
+    year = db.relationship('Year', back_populates='disciplines')
+    group = db.relationship('Group', back_populates='disciplines')
+    
+    def to_dict(self):
+        return {'id': self.id, 'name': self.name, 'year_id': self.year_id, 'group_id': self.group_id}

@@ -1,4 +1,4 @@
-from app import db
+from app.extension import db
 
 class Group(db.Model):
     __tablename__ = 'groups'
@@ -7,5 +7,8 @@ class Group(db.Model):
     year_id = db.Column(db.Integer, db.ForeignKey('years.id'), nullable=False)
     semian = db.Column(db.String, nullable=False)
 
-    students = db.relationship('Student', backref='group', cascade='all, delete-orphan')
-    disciplines = db.relationship('Discipline', backref='group', cascade='all, delete-orphan')
+    students = db.relationship('Student', back_populates='group', cascade='all, delete-orphan')
+    disciplines = db.relationship('Discipline', back_populates='group', cascade='all, delete-orphan')
+    
+    def to_dict(self):
+        return {'id': self.id, 'name': self.name, 'year_id': self.year_id}
