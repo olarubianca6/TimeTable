@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Timetable</title>
+    <style>
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    </style>
+</head>
+<body>
+    <h1>Timetable</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Day</th>
+                <th>Hour</th>
+                <th>Group</th>
+                <th>Teacher</th>
+                <th>Discipline</th>
+                <th>Room</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for session in timetable_data %}
+            <tr>
+                <td>{{ session.day }}</td>
+                <td>{{ session.hour }}</td>
+                <td>{{ session.group_id }}</td>
+                <td>{{ session.teacher_id }}</td>
+                <td>{{ session.discipline_id }}</td>
+                <td>{{ session.room_id }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

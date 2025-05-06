@@ -1,4 +1,4 @@
-from app import db
+from app.extension import db
 
 class ClassSession(db.Model):
     __tablename__ = 'class_sessions'

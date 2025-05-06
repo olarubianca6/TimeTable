@@ -1,4 +1,4 @@
-from app import db
+from app.extension import db
 
 class TimeSlot(db.Model):
     __tablename__ = 'time_slots'
