@@ -12,4 +12,4 @@ def get_group(id):
     group = Group.query.get(id)
     if not group:
         return {'error': 'Group not found'}, 404
-    return {'id': group.id, 'name': group.name}, 200
+    return {'id': group.id, 'name': group.name, 'semian': group.semian }, 200
