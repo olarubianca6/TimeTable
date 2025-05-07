@@ -8,6 +8,7 @@ from app.routes.timetable_routes import timetable_bp
 from app.routes.year_routes import years_bp
 from app.routes.group_routes import groups_bp
 from app.routes.class_session_routes import class_session_bp
+from app.routes.time_slot_routes import time_bp
 from app.extension import db
 from flask_cors import CORS
 
@@ -22,6 +23,7 @@ def create_app():
     db.init_app(app)
     app.register_blueprint(students_bp)
     app.register_blueprint(teachers_bp)
+    app.register_blueprint(time_bp)
     app.register_blueprint(disciplines_bp)
     app.register_blueprint(rooms_bp)
     app.register_blueprint(years_bp)

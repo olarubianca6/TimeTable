@@ -25,23 +25,23 @@ def get_all_class_sessions():
     if not class_sessions:
         return jsonify({'message': 'No class sessions found'}), 404
 
-    # Prepare the response
     response = []
     for class_session in class_sessions:
         discipline = Discipline.query.get(class_session.discipline_id)
         teacher = Teacher.query.get(class_session.teacher_id)
         room = Room.query.get(class_session.room_id)
         time_slot = TimeSlot.query.get(class_session.time_slot_id)
-
+        time_slot_str = f"{time_slot.start_time.strftime('%H:%M')} - {time_slot.end_time.strftime('%H:%M')}" if time_slot else None
         response.append({
             'id': class_session.id,
             'discipline': discipline.name if discipline else None,
             'teacher': teacher.name if teacher else None,
             'room': room.name if room else None,
-            'time_slot_id': time_slot.id if time_slot else None,
+            'day': time_slot.day if time_slot else None,
+            'time_slot': time_slot_str,
             'class_type': class_session.class_type
         })
-
+    print(response)
     return jsonify(response), 200
 
 
@@ -85,8 +85,8 @@ def add_class_session():
     if not discipline or not teacher or not room or not time_slot:
         return jsonify({'error': 'Invalid data provided'}), 400
 
-    # if not valid_class_time(time_slot.day, time_slot.start_time):
-    #     return jsonify({'error': 'Invalid class time'}), 400
+    if not valid_class_time(time_slot.day, time_slot.start_time):
+        return jsonify({'error': 'Invalid class time'}), 400
     if not match_room_class_type(room.room_type, class_type):
         print(room.room_type, class_type)
         return jsonify({'error': 'Room type does not match class type'}), 400
@@ -100,7 +100,7 @@ def add_class_session():
         time_slot_id=time_slot_id,
         class_type=class_type
     )
-    print(new_class_session)
+
     # conflict_response, status_code = check_conflicts(existing_class_sessions, new_class_session)
     # if conflict_response:
     #     return jsonify(conflict_response), status_code

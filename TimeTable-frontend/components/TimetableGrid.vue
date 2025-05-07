@@ -10,14 +10,14 @@
           <option v-for="d in days" :key="d">{{ d }}</option>
         </select>
         <select class="py-2 px-1" v-model="form.slotId">
-          <option v-for="s in timeSlots" :key="s.id" :value="s.id">
+          <option v-for="(s, index) in timeSlots" :key="index" :value="`${s.start} - ${s.end}`">
             {{ s.start }} - {{ s.end }}
           </option>
         </select>
         <select class="py-2 px-1" v-model="form.group">
           <option v-for="g in groups" :key="g.id">{{ g.name }}</option>
         </select>
-        <select class="py-2 px-1" v-model="form.teachers">
+        <select class="py-2 px-1" v-model="form.professor">
           <option v-for="p in teachers" :key="p.id">{{ p.name }}</option>
         </select>
         <select class="py-2 px-1" v-model="form.discipline">
@@ -49,7 +49,7 @@
         {{ day }}
       </div>
 
-      <div v-for="slot in timeSlots" :key="slot.id" class="contents">
+      <div v-for="(slot, index) in timeSlots" :key="index" class="contents">
         <div class="bg-blue-100 p-2 text-sm">
           {{ slot.start }} - {{ slot.end }}
         </div>
@@ -61,9 +61,10 @@
         >
           <div
             v-for="s in filteredTimetable.filter(
-              (s) => s.day === day && s.slotId === slot.id
+              (s) =>
+                s.day === day && s.time_slot === `${slot.start} - ${slot.end}`
             )"
-            :key="s.group + s.discipline + s.professor + s.room"
+            :key="s.discipline + s.teacher + s.room"
             class="text-sm mb-2 p-1 text-gray-700 rounded bg-blue-100 relative"
           >
             <button
@@ -72,9 +73,8 @@
             >
               x
             </button>
-            <strong>{{ s.discipline }}</strong> ({{ s.type }})<br />
-            {{ s.group }}<br />
-            {{ s.professor }}<br />
+            <strong>{{ s.discipline }}</strong> ({{ s.class_type }})<br />
+            {{ s.teacher }}<br />
             <em>{{ s.room }}</em>
           </div>
         </div>
@@ -84,83 +84,76 @@
 </template>
 
 <script setup lang="ts">
-const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 const timeSlots = [
-  { id: 1, start: "08:00", end: "10:00" },
-  { id: 2, start: "10:00", end: "12:00" },
-  { id: 3, start: "12:00", end: "14:00" },
-  { id: 4, start: "14:00", end: "16:00" },
-  { id: 5, start: "16:00", end: "18:00" },
+  { start: "08:00", end: "10:00" },
+  { start: "10:00", end: "12:00" },
+  { start: "12:00", end: "14:00" },
+  { start: "14:00", end: "16:00" },
+  { start: "16:00", end: "18:00" },
 ];
+const activityTypes = ["course", "laboratory", "seminar", "seminar/laboratory"];
 
-const activityTypes = ["course", "seminar", "laboratory"];
-
-const timetableStore = useTimetableStore();
 const disciplinesStore = useDisciplinesStore();
 const groupsStore = useGroupsStore();
 const teachersStore = useTeachersStore();
 const roomsStore = useRoomsStore();
 const classSessionsStore = useClassSessionsStore();
+const timeSlotsStore = useTimeSlotsStore();
 
-const { timetable } = storeToRefs(timetableStore);
 const { classSessions } = storeToRefs(classSessionsStore);
 const { disciplines } = storeToRefs(disciplinesStore);
 const { teachers } = storeToRefs(teachersStore);
 const { groups } = storeToRefs(groupsStore);
 const { rooms } = storeToRefs(roomsStore);
+const { slots } = storeToRefs(timeSlotsStore);
 
 onMounted(async () => {
+  await timeSlotsStore.fetchTimeSlots();
   await disciplinesStore.fetchDisciplines(),
-  await groupsStore.fetchGroups(),
-  await teachersStore.fetchTeachers(),
-  await roomsStore.fetchRooms(),
-  // await timetableStore.fetchTimetable();
-  await classSessionsStore.fetchClassSessions();
-  console.log(classSessions);
+    await groupsStore.fetchGroups(),
+    await teachersStore.fetchTeachers(),
+    await roomsStore.fetchRooms(),
+    await classSessionsStore.fetchClassSessions();
 });
 
 const form = reactive({
-  day: days[0],
-  slotId: timeSlots[0].id,
-  group: groups.value[0]?.name || "",
-  professor: teachers.value[0]?.name || "", 
-  discipline: disciplines.value[0]?.name || "", 
-  room: rooms.value[0]?.name || "",
-  type: activityTypes[0],
+  day: "",
+  slotId: "",
+  group: "",
+  professor: "",
+  discipline: "",
+  room: "",
+  type: "",
 });
 
 const filteredTimetable = computed(() => {
   if (!Array.isArray(classSessions.value)) {
     return [];
   }
-  return classSessions.value.filter((s) => {
-    return (
-      (form.day ? s.day === form.day : true) &&
-      (form.slotId ? s.slotId === form.slotId : true) &&
-      (form.group ? s.group === form.group : true) &&
-      (form.professor ? s.professor === form.professor : true) &&
-      (form.discipline ? s.discipline === form.discipline : true) &&
-      (form.room ? s.room === form.room : true) &&
-      (form.type ? s.type === form.type : true)
-    );
-  });
+
+  return classSessions.value;
 });
 
 const addSession = async () => {
   const sessionData = {
-    discipline_id: disciplines.value.find(d => d.name === form.discipline)?.id,
-    teacher_id: teachers.value.find(t => t.name === form.professor)?.id ?? 1,
-    room_id: rooms.value.find(r => r.name === form.room)?.id ?? 1,
-    time_slot_id: form.slotId || 1,
+    discipline_id: disciplines.value.find((d) => d.name === form.discipline)
+      ?.id,
+    teacher_id: teachers.value.find((t) => t.name === form.professor)?.id ?? 1,
+    room_id: rooms.value.find((t) => t.name === form.room)?.id ?? 1,
+    time_slot_id:
+      slots.value.find(
+        (s) =>
+          s.day === form.day &&
+          form.slotId === `${s.start_time} - ${s.end_time}`
+      )?.id ?? 1,
     class_type: form.type,
   };
-console.log(sessionData);
+
   await classSessionsStore.addClassSession(sessionData);
 };
 
 const removeSession = (sessionToRemove: any) => {
-  classSessions.value = classSessions.value.filter(
-    (s) => s !== sessionToRemove
-  );
+  classSessionsStore.deleteClassSession(sessionToRemove.id);
 };
 </script>

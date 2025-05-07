@@ -27,14 +27,22 @@ export interface Timetable {
   discipline: string;
   teacher: string;
   room: string;
+  day: string;
   time_slot: string;
   class_type: string;
 }
 
 export interface ClassSession {
-  discipline_id: string;
-  teacher_id: string;
-  room_id: string;
-  time_slot_id: string;
+  discipline_id: number;
+  teacher_id: number;
+  room_id: number;
+  time_slot_id: number;
   class_type: string;
+}
+
+export interface TimeSlots {
+  id: number;
+  day: string;
+  start_time: string;
+  end_time: string;
 }

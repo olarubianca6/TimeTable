@@ -8,8 +8,9 @@ export const useClassSessionsStore = defineStore('classSessions', {
       this.loading = true;
       try {
         const response = await useApi('/class_sessions', { method: 'GET' }) as { data: Timetable[] };
+  
         if (response) {
-          this.classSessions = response.data;
+          this.classSessions = response;
         } else {
           this.classSessions = [];
         }
@@ -42,10 +43,10 @@ export const useClassSessionsStore = defineStore('classSessions', {
           method: 'POST',
           body: JSON.stringify(data),
         }) as { message: string };
-        console.log(response.message);
+        console.log(response.message)
         await this.fetchClassSessions();
       } catch (error) {
-        console.error('Failed to add class session:', error);
+        alert(error);
       } finally {
         this.loading = false;
       }
@@ -61,7 +62,7 @@ export const useClassSessionsStore = defineStore('classSessions', {
         console.log(response.message);
         await this.fetchClassSessions();
       } catch (error) {
-        console.error('Failed to edit class session:', error);
+        alert(error);
       } finally {
         this.loading = false;
       }
@@ -74,7 +75,7 @@ export const useClassSessionsStore = defineStore('classSessions', {
         console.log(response.message);
         await this.fetchClassSessions();
       } catch (error) {
-        console.error('Failed to delete class session:', error);
+        alert(error);
       } finally {
         this.loading = false;
       }

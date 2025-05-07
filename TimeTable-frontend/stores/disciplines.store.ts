@@ -1,4 +1,3 @@
-
 export const useDisciplinesStore = defineStore('disciplines', {
   state: () => ({
     disciplines: [] as Discipline[],
