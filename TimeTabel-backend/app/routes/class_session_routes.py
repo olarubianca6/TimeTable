@@ -41,7 +41,6 @@ def get_all_class_sessions():
             'time_slot': time_slot_str,
             'class_type': class_session.class_type
         })
-    print(response)
     return jsonify(response), 200
 
 
@@ -81,29 +80,27 @@ def add_class_session():
     teacher = Teacher.query.get(teacher_id)
     room = Room.query.get(room_id)
     time_slot = TimeSlot.query.get(time_slot_id)
-    print(discipline, teacher, room, time_slot)
+
     if not discipline or not teacher or not room or not time_slot:
         return jsonify({'error': 'Invalid data provided'}), 400
 
-    if not valid_class_time(time_slot.day, time_slot.start_time):
-        return jsonify({'error': 'Invalid class time'}), 400
+    # if not valid_class_time(time_slot.day, time_slot.hour):
+    #     return jsonify({'error': 'Invalid class time'}), 400
     if not match_room_class_type(room.room_type, class_type):
-        print(room.room_type, class_type)
         return jsonify({'error': 'Room type does not match class type'}), 400
 
     existing_class_sessions = ClassSession.query.all()
-
     new_class_session = ClassSession(
-        discipline_id=discipline_id,
+        discipline=discipline,
         teacher_id=teacher_id,
         room_id=room_id,
         time_slot_id=time_slot_id,
         class_type=class_type
     )
 
-    # conflict_response, status_code = check_conflicts(existing_class_sessions, new_class_session)
-    # if conflict_response:
-    #     return jsonify(conflict_response), status_code
+    conflict_response, status_code = check_conflicts(existing_class_sessions, new_class_session)
+    if conflict_response:
+        return jsonify(conflict_response), status_code
 
     db.session.add(new_class_session)
     db.session.commit()
@@ -127,8 +124,8 @@ def edit_class_session(id):
     room = Room.query.get(class_session.room_id)
     time_slot = TimeSlot.query.get(class_session.time_slot_id)
 
-    # if not valid_class_time(time_slot.day, time_slot.hour):
-    #     return jsonify({'error': 'Invalid class time'}), 400
+    if not valid_class_time(time_slot.day, time_slot.hour):
+        return jsonify({'error': 'Invalid class time'}), 400
     if not match_room_class_type(room.room_type, class_session.class_type):
         return jsonify({'error': 'Room type does not match class type'}), 400
 

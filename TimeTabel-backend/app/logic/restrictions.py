@@ -4,7 +4,6 @@ def valid_class_time(day, hour):
     if isinstance(hour, time):
         hour_int = hour.hour
     else:
-        print("Eroare: `hour` nu este un obiect de tip datetime.time")
         return False
 
     return day in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'] and 8 <= hour_int <= 20

@@ -9,10 +9,10 @@ class Discipline(db.Model):
     group_id = db.Column(db.Integer, db.ForeignKey('groups.id'), nullable=True)
 
     teacher_links = db.relationship('DisciplineTeacher', back_populates='discipline')
-    classes = db.relationship('ClassSession', backref='discipline', cascade='all, delete-orphan')
+    classes = db.relationship('ClassSession', backref='Discipline', cascade='all, delete-orphan')
 
     year = db.relationship('Year', back_populates='disciplines')
     group = db.relationship('Group', back_populates='disciplines')
-    
+
     def to_dict(self):
         return {'id': self.id, 'name': self.name, 'year_id': self.year_id, 'group_id': self.group_id}
