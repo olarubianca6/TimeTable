@@ -9,6 +9,7 @@ class ClassSession(db.Model):
     time_slot_id = db.Column(db.Integer, db.ForeignKey('time_slots.id'), nullable=False)
     class_type = db.Column(db.String, nullable=False)
 
+    discipline = db.relationship('Discipline')
     teacher = db.relationship('Teacher')
     room = db.relationship('Room')
     time_slot = db.relationship('TimeSlot')

@@ -65,7 +65,7 @@ def add_class_session():
 
     existing_class_sessions = ClassSession.query.all()
     new_class_session = ClassSession(
-        discipline_id=discipline_id,
+        discipline=discipline,
         teacher_id=teacher_id,
         room_id=room_id,
         time_slot_id=time_slot_id,
