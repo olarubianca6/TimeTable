@@ -7,7 +7,6 @@ class Group(db.Model):
     year_id = db.Column(db.Integer, db.ForeignKey('years.id'), nullable=False)
     semian = db.Column(db.String, nullable=False)
 
-    students = db.relationship('Student', back_populates='group', cascade='all, delete-orphan')
     disciplines = db.relationship('Discipline', back_populates='group', cascade='all, delete-orphan')
     
     def to_dict(self):
