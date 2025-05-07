@@ -116,6 +116,7 @@ onMounted(async () => {
   await roomsStore.fetchRooms(),
   // await timetableStore.fetchTimetable();
   await classSessionsStore.fetchClassSessions();
+  console.log(classSessions);
 });
 
 const form = reactive({
