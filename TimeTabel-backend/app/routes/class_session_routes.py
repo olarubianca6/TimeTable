@@ -20,6 +20,8 @@ def check_conflicts(existing_class_sessions, class_session):
 
 @class_session_bp.route('/class_sessions', methods=['GET'])
 def get_all_class_sessions():
+    year_id = request.args.get('year_id')
+    print(year_id)
     class_sessions = ClassSession.query.all()
 
     if not class_sessions:
@@ -42,7 +44,6 @@ def get_all_class_sessions():
             'class_type': class_session.class_type
         })
     return jsonify(response), 200
-
 
 @class_session_bp.route('/class_session/<int:id>', methods=['GET'])
 def get_class_session(id):
@@ -97,10 +98,10 @@ def add_class_session():
         time_slot_id=time_slot_id,
         class_type=class_type
     )
-
-    conflict_response, status_code = check_conflicts(existing_class_sessions, new_class_session)
-    if conflict_response:
-        return jsonify(conflict_response), status_code
+    if existing_class_sessions:
+        conflict_response, status_code = check_conflicts(existing_class_sessions, new_class_session)
+        if conflict_response:
+            return jsonify(conflict_response), status_code
 
     db.session.add(new_class_session)
     db.session.commit()

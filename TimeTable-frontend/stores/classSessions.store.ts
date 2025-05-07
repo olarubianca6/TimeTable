@@ -7,21 +7,20 @@ export const useClassSessionsStore = defineStore('classSessions', {
     async fetchClassSessions() {
       this.loading = true;
       try {
-        const response = await useApi('/class_sessions', { method: 'GET' }) as { data: Timetable[] };
-  
+        const response = await useApi(`/class_sessions`, { method: 'GET' }) as  Timetable[] ;
         if (response) {
           this.classSessions = response;
         } else {
           this.classSessions = [];
         }
       } catch (error) {
-        console.error('Failed to fetch class sessions:', error);
+        alert(error);
         this.classSessions = [];
       } finally {
         this.loading = false;
       }
     },
-
+    
     async fetchClassSession(id: number) {
       this.loading = true;
       try {

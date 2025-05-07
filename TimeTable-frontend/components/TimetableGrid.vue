@@ -15,7 +15,8 @@
           </option>
         </select>
         <select class="py-2 px-1" v-model="form.group">
-          <option v-for="g in groups" :key="g.id">{{ g.name }}</option>
+          <option v-for="g in groups" :key="g.id">Semina: {{ g.semian }}; Grupa: {{ g.name }} </option>
+         
         </select>
         <select class="py-2 px-1" v-model="form.professor">
           <option v-for="p in teachers" :key="p.id">{{ p.name }}</option>
@@ -38,7 +39,21 @@
       </button>
     </form>
 
-    <h2 class="text-xl font-bold text-gray-700 mb-4">Orar</h2>
+    <h2 class="text-xl font-bold text-gray-700 mb-4">Selectează Anul</h2>
+    <div class="flex space-x-4 mb-6">
+      <button
+        v-for="year in filteredYears"
+        :key="year.id"
+        :class="[
+          'py-2 px-4 border rounded-md text-lg',
+          selectedYear === year.id ? 'bg-blue-500 text-white' : 'bg-transparent text-blue-500 border-blue-500'
+        ]"
+        @click="selectYear(year.id)"
+      >
+        {{ year.name }}
+      </button>
+    </div>
+
     <div class="grid grid-cols-6 gap-px text-gray-800 border border-blue-300">
       <div class="bg-blue-100 font-bold text-gray-700 p-2">Ora</div>
       <div
@@ -100,7 +115,9 @@ const teachersStore = useTeachersStore();
 const roomsStore = useRoomsStore();
 const classSessionsStore = useClassSessionsStore();
 const timeSlotsStore = useTimeSlotsStore();
+const yearsStore = useYearsStore();
 
+const { years } = yearsStore;
 const { classSessions } = storeToRefs(classSessionsStore);
 const { disciplines } = storeToRefs(disciplinesStore);
 const { teachers } = storeToRefs(teachersStore);
@@ -108,13 +125,20 @@ const { groups } = storeToRefs(groupsStore);
 const { rooms } = storeToRefs(roomsStore);
 const { slots } = storeToRefs(timeSlotsStore);
 
+const selectedYear = ref<number | null>(null);
+
 onMounted(async () => {
   await timeSlotsStore.fetchTimeSlots();
+  await yearsStore.fetchYears();
   await disciplinesStore.fetchDisciplines(),
-    await groupsStore.fetchGroups(),
-    await teachersStore.fetchTeachers(),
-    await roomsStore.fetchRooms(),
-    await classSessionsStore.fetchClassSessions();
+  await groupsStore.fetchGroups(),
+  await teachersStore.fetchTeachers(),
+  await roomsStore.fetchRooms(),
+  await classSessionsStore.fetchClassSessions();
+});
+
+const filteredYears = computed(() => {
+  return years && years.length > 0 ? years : [];
 });
 
 const form = reactive({
@@ -134,6 +158,11 @@ const filteredTimetable = computed(() => {
 
   return classSessions.value;
 });
+
+const selectYear = (yearId: number) => {
+  selectedYear.value = yearId;
+  classSessionsStore.fetchClassSessions(); 
+};
 
 const addSession = async () => {
   const sessionData = {

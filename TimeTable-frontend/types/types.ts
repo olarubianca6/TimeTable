@@ -9,6 +9,7 @@ export interface Group {
   id: number;
   name: string;
   year_id: number;
+  semian: string;
 }
 
 export interface Teacher {

@@ -1,3 +1,4 @@
+from app.models import Discipline
 def room_conflict(existing_entries, new_entry):
     return any(
         e.room_id == new_entry.room_id and
@@ -15,10 +16,19 @@ def teacher_conflict(existing_entries, new_entry):
     return False
 
 def group_conflict(existing_entries, new_entry):
-    new_group_ids = {g.id for g in new_entry.groups}
+    new_discipline = Discipline.query.get(new_entry.discipline_id)
+
+    if not new_discipline or not new_discipline.groups:
+        return False
+
+    new_group_ids = {g.id for g in new_discipline.groups}
+
     for e in existing_entries:
         if e.time_slot_id == new_entry.time_slot_id:
-            existing_group_ids = {g.id for g in e.groups}
-            if new_group_ids & existing_group_ids:
-                return True
+            existing_discipline = Discipline.query.get(e.discipline_id)
+            if existing_discipline and existing_discipline.groups:
+                existing_group_ids = {g.id for g in existing_discipline.groups}
+                if new_group_ids & existing_group_ids:
+                    return True
+
     return False
