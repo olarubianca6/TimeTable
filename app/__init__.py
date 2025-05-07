@@ -12,7 +12,7 @@ from app.extension import db
 
 def create_app():
     app = Flask(__name__)
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'xxxxxxxxxxxxxxxxxxxx'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'xxxxxxxxxxxxxxxx'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     db.init_app(app)
