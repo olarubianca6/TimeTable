@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request 
-from app.models import  Year
+from app.models import Year
 years_bp = Blueprint('years', __name__)
 
 @years_bp.route('/years', methods=['GET'])

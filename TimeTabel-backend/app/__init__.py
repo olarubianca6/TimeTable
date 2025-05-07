@@ -8,12 +8,15 @@ from app.routes.timetable_routes import timetable_bp
 from app.routes.year_routes import years_bp
 from app.routes.group_routes import groups_bp
 from app.routes.class_session_routes import class_session_bp
-from app.extension import db 
+from app.extension import db
+from flask_cors import CORS
 
 
 def create_app():
     app = Flask(__name__, template_folder='templates')
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'xxxxxxxxxxxxxxxx'
+    CORS(app)
+    app.config[
+        'SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres.ihewwagfkrolwjvmxskg:Timetable123@aws-0-eu-central-1.pooler.supabase.com:5432/postgres'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     db.init_app(app)
