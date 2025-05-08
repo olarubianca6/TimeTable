@@ -5,6 +5,7 @@
       class="flex flex-col w-full items-center mb-2 justify-center"
       @submit.prevent="addSession"
     >
+      <!-- Aici sunt selectările pentru zi, slot, grupă, profesor, disciplină, tip activitate, cameră -->
       <div class="flex flex-wrap gap-6 mb-6">
         <select class="py-2 px-1" v-model="form.day">
           <option v-for="d in days" :key="d">{{ d }}</option>
@@ -16,7 +17,6 @@
         </select>
         <select class="py-2 px-1" v-model="form.group">
           <option v-for="g in groups" :key="g.id">Semina: {{ g.semian }}; Grupa: {{ g.name }} </option>
-         
         </select>
         <select class="py-2 px-1" v-model="form.professor">
           <option v-for="p in teachers" :key="p.id">{{ p.name }}</option>
@@ -39,7 +39,7 @@
       </button>
     </form>
 
-    <h2 class="text-xl font-bold text-gray-700 mb-4">Selectează Anul</h2>
+    <h2 v-if="years.length > 0" class="text-xl font-bold text-gray-700 mb-4">Selectează Anul</h2>
     <div class="flex space-x-4 mb-6">
       <button
         v-for="year in filteredYears"
@@ -75,7 +75,7 @@
           class="border border-blue-300 p-2 min-h-[5rem] bg-white"
         >
           <div
-            v-for="s in filteredTimetable.filter(
+            v-for="s in classSessions.filter(
               (s) =>
                 s.day === day && s.time_slot === `${slot.start} - ${slot.end}`
             )"
@@ -117,7 +117,7 @@ const classSessionsStore = useClassSessionsStore();
 const timeSlotsStore = useTimeSlotsStore();
 const yearsStore = useYearsStore();
 
-const { years } = yearsStore;
+const { years } = storeToRefs(yearsStore);
 const { classSessions } = storeToRefs(classSessionsStore);
 const { disciplines } = storeToRefs(disciplinesStore);
 const { teachers } = storeToRefs(teachersStore);
@@ -134,12 +134,16 @@ onMounted(async () => {
   await groupsStore.fetchGroups(),
   await teachersStore.fetchTeachers(),
   await roomsStore.fetchRooms(),
-  await classSessionsStore.fetchClassSessions();
+  await classSessionsStore.fetchClassSessions({});
 });
 
 const filteredYears = computed(() => {
-  return years && years.length > 0 ? years : [];
+  const allYear = { id: 0, name: "All" };
+  return years && years.value.length > 0 ? [allYear, ...years.value] : [allYear]; 
 });
+
+
+
 
 const form = reactive({
   day: "",
@@ -151,17 +155,13 @@ const form = reactive({
   type: "",
 });
 
-const filteredTimetable = computed(() => {
-  if (!Array.isArray(classSessions.value)) {
-    return [];
-  }
-
-  return classSessions.value;
-});
-
-const selectYear = (yearId: number) => {
+const selectYear = async(yearId: number) => {
   selectedYear.value = yearId;
-  classSessionsStore.fetchClassSessions(); 
+  if(yearId === 0){
+    await classSessionsStore.fetchClassSessions({}); 
+    return;
+  }
+  await classSessionsStore.fetchClassSessions({year_id:yearId}); 
 };
 
 const addSession = async () => {

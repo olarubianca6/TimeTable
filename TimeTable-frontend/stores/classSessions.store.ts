@@ -4,10 +4,14 @@ export const useClassSessionsStore = defineStore('classSessions', {
     loading: false,
   }),
   actions: {
-    async fetchClassSessions() {
+    async fetchClassSessions(payload: ClassSessionPayload | undefined) {
       this.loading = true;
       try {
-        const response = await useApi(`/class_sessions`, { method: 'GET' }) as  Timetable[] ;
+        const response = await useApi(`/class_sessions`, 
+          { 
+            method: 'GET', 
+            params: payload,
+          }) as  Timetable[] ;
         if (response) {
           this.classSessions = response;
         } else {

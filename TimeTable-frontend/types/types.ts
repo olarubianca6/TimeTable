@@ -47,3 +47,8 @@ export interface TimeSlots {
   start_time: string;
   end_time: string;
 }
+
+export interface Years {
+  id: number;
+  name: string;
+}

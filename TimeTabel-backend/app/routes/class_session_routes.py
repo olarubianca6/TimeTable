@@ -21,9 +21,13 @@ def check_conflicts(existing_class_sessions, class_session):
 @class_session_bp.route('/class_sessions', methods=['GET'])
 def get_all_class_sessions():
     year_id = request.args.get('year_id')
-    print(year_id)
-    class_sessions = ClassSession.query.all()
 
+    class_sessions_query = ClassSession.query
+    if year_id:
+        class_sessions_query = class_sessions_query.join(Discipline).filter(Discipline.year_id == year_id)
+
+    class_sessions = class_sessions_query.all()
+    print(class_sessions)
     if not class_sessions:
         return jsonify({'message': 'No class sessions found'}), 404
 

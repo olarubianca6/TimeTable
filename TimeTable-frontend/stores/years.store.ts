@@ -1,6 +1,6 @@
 export const useYearsStore = defineStore('years', {
   state: () => ({
-    years: [] as { id: number; name: string }[],
+    years: [] as Years[],
     loading: false,
     error: null as string | null,
   }),
@@ -8,7 +8,7 @@ export const useYearsStore = defineStore('years', {
     async fetchYears() {
       this.loading = true;
       try {
-        const response = await useApi('/years', { method: 'GET' })as { id: number; name: string }[];
+        const response = await useApi('/years', { method: 'GET' })as Years[];
         this.years = response;   
       } catch (error) {
         this.error = 'Failed to load years';
