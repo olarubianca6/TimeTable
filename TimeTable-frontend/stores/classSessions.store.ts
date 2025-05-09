@@ -19,6 +19,7 @@ export const useClassSessionsStore = defineStore('classSessions', {
         }
       } catch (error) {
         alert(error);
+        
         this.classSessions = [];
       } finally {
         this.loading = false;
@@ -47,7 +48,8 @@ export const useClassSessionsStore = defineStore('classSessions', {
           body: JSON.stringify(data),
         }) as { message: string };
         console.log(response.message)
-        await this.fetchClassSessions();
+        await this.fetchClassSessions({});
+        
       } catch (error) {
         alert(error);
       } finally {

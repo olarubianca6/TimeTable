@@ -27,7 +27,6 @@ def get_all_class_sessions():
         class_sessions_query = class_sessions_query.join(Discipline).filter(Discipline.year_id == year_id)
 
     class_sessions = class_sessions_query.all()
-    print(class_sessions)
     if not class_sessions:
         return jsonify({'message': 'No class sessions found'}), 404
 

@@ -106,6 +106,7 @@ const timeSlots = [
   { start: "12:00", end: "14:00" },
   { start: "14:00", end: "16:00" },
   { start: "16:00", end: "18:00" },
+  { start: "18:00", end: "20:00" },
 ];
 const activityTypes = ["course", "laboratory", "seminar", "seminar/laboratory"];
 
@@ -141,8 +142,6 @@ const filteredYears = computed(() => {
   const allYear = { id: 0, name: "All" };
   return years && years.value.length > 0 ? [allYear, ...years.value] : [allYear]; 
 });
-
-
 
 
 const form = reactive({

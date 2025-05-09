@@ -18,7 +18,7 @@ def timetable():
             'discipline': discipline.name if discipline else None,
             'teacher': teacher.name if teacher else None,
             'room': room.name if room else None,
-            'time_slot': time_slot.slot if time_slot else None,
+            'time_slot': f"{time_slot.day}: {time_slot.start_time} - {time_slot.end_time}" if time_slot else None,
             'class_type': class_session.class_type
         })
 

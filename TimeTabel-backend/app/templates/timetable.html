@@ -13,8 +13,8 @@
         <thead>
             <tr>
                 <th>Day</th>
-                <th>Hour</th>
-                <th>Group</th>
+                <th>Time Slot</th>
+                <th>Class Type</th>
                 <th>Teacher</th>
                 <th>Discipline</th>
                 <th>Room</th>
@@ -23,12 +23,12 @@
         <tbody>
             {% for session in timetable_data %}
             <tr>
-                <td>{{ session.day }}</td>
-                <td>{{ session.hour }}</td>
-                <td>{{ session.group_id }}</td>
-                <td>{{ session.teacher_id }}</td>
-                <td>{{ session.discipline_id }}</td>
-                <td>{{ session.room_id }}</td>
+                <td>{{ session.time_slot.split(":")[0] }}</td>
+                <td>{{ session.time_slot.split(":")[1] }} - {{ session.time_slot.split(":")[2] }}</td>
+                <td>{{ session.class_type }}</td>
+                <td>{{ session.teacher }}</td>
+                <td>{{ session.discipline }}</td>
+                <td>{{ session.room }}</td>
             </tr>
             {% endfor %}
         </tbody>
