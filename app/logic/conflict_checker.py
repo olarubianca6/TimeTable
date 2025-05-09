@@ -22,3 +22,11 @@ def group_conflict(existing_entries, new_entry):
             if new_group_ids & existing_group_ids:
                 return True
     return False
+
+def semian_conflict(existing_entries, new_entry):
+    new_semian_id = new_entry.semian_id
+    for e in existing_entries:
+        if e.time_slot_id == new_entry.time_slot_id and e.semian_id == new_semian_id:
+            return True
+    return False
+

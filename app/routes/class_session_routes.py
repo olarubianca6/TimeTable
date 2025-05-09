@@ -1,7 +1,7 @@
 from flask import request, jsonify, Blueprint
 from app.extension import db
 from app.models import ClassSession, Teacher, Discipline, Room, TimeSlot
-from app.logic.conflict_checker import room_conflict, teacher_conflict, group_conflict
+from app.logic.conflict_checker import room_conflict, teacher_conflict, group_conflict, semian_conflict
 from app.logic.restrictions import valid_class_time, match_room_class_type
 
 class_session_bp = Blueprint('class_session', __name__)
@@ -15,6 +15,9 @@ def check_conflicts(existing_class_sessions, class_session):
 
     if group_conflict(existing_class_sessions, class_session):
         return {'error': 'Group conflict'}, 400
+
+    if semian_conflict(existing_class_sessions, class_session):
+        return {'error': 'Semian conflict'}, 400
 
     return None, None
 
