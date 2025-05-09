@@ -1,5 +1,7 @@
 from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
+
 from app.routes.student_routes import students_bp
 from app.routes.teacher_routes import teachers_bp
 from app.routes.discipline_routes import disciplines_bp
@@ -10,7 +12,6 @@ from app.routes.group_routes import groups_bp
 from app.routes.class_session_routes import class_session_bp
 from app.routes.time_slot_routes import time_bp
 from app.extension import db
-from flask_cors import CORS
 
 
 def create_app():

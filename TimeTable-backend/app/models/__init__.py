@@ -7,3 +7,4 @@ from .discipline_teacher import DisciplineTeacher
 from .room import Room
 from .time_slot import TimeSlot
 from .class_session import ClassSession
+from .semian import Semian
