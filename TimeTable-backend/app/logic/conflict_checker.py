@@ -1,4 +1,5 @@
 from app.models import Discipline
+
 def room_conflict(existing_entries, new_entry):
     return any(
         e.room_id == new_entry.room_id and
