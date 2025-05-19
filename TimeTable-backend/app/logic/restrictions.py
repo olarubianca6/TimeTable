@@ -1,13 +1,18 @@
 from datetime import time
 
 def valid_class_time(day, hour):
-    if isinstance(hour, time):
-        hour_int = hour.hour
-    else:
+    if not isinstance(hour, time):
         return False
-
-    return day in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'] and 8 <= hour_int <= 20
-
+    else:
+        return (
+        day in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'] and
+        (
+            hour.hour > 8 or (hour.hour == 8 and hour.minute >= 0)
+        ) and
+        (
+            hour.hour < 20 or (hour.hour == 20 and hour.minute == 0)
+        )
+    )
 
 def match_room_class_type(room_type, class_type):
     room_type = room_type.lower()

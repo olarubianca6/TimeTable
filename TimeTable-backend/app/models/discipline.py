@@ -5,14 +5,14 @@ class Discipline(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
-    year_id = db.Column(db.Integer, db.ForeignKey('years.id'), nullable=False)
-    group_id = db.Column(db.Integer, db.ForeignKey('groups.id'), nullable=True)
+    year_id = db.Column(db.Integer, db.ForeignKey('years.id', ondelete='CASCADE'), nullable=False)
+    group_id = db.Column(db.Integer, db.ForeignKey('groups.id', ondelete='CASCADE'), nullable=True)
 
-    teacher_links = db.relationship('DisciplineTeacher', back_populates='discipline')
-    classes = db.relationship('ClassSession', backref='Discipline', cascade='all, delete-orphan')
+    teacher_links = db.relationship('DisciplineTeacher', back_populates='discipline', cascade='all, delete-orphan')
+    classes = db.relationship('ClassSession', back_populates='discipline', cascade='all, delete-orphan')
 
-    year = db.relationship('Year', back_populates='disciplines')
-    group = db.relationship('Group', back_populates='disciplines')
+    year = db.relationship('Year', back_populates='disciplines', passive_deletes=True)
+    group = db.relationship('Group', back_populates='disciplines', passive_deletes=True)
 
     def to_dict(self):
         return {'id': self.id, 'name': self.name, 'year_id': self.year_id, 'group_id': self.group_id}

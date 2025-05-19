@@ -5,7 +5,7 @@ class Semian(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
-    year_id = db.Column(db.Integer, db.ForeignKey('years.id'), nullable=False)
+    year_id = db.Column(db.Integer, db.ForeignKey('years.id', ondelete='CASCADE'), nullable=False)
 
-    year = db.relationship('Year', back_populates='semiani')
-    groups = db.relationship('Group', back_populates='semiani', cascade='all, delete-orphan')
+    year = db.relationship('Year', back_populates='semian', passive_deletes=True)
+    groups = db.relationship('Group', back_populates='semian', cascade='all, delete-orphan', passive_deletes=True)
