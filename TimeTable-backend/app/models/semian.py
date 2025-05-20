@@ -8,4 +8,4 @@ class Semian(db.Model):
     year_id = db.Column(db.Integer, db.ForeignKey('years.id'), nullable=False)
 
     year = db.relationship('Year', back_populates='semiani')
-    groups = db.relationship('Group', back_populates='semiani', cascade='all, delete-orphan')
+    groups = db.relationship('Group', back_populates='semian', cascade='all, delete-orphan')
