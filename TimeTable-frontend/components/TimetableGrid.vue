@@ -5,29 +5,30 @@
       class="flex flex-col w-full items-center mb-2 justify-center"
       @submit.prevent="addSession"
     >
+      <!-- Aici sunt selectările pentru zi, slot, grupă, profesor, disciplină, tip activitate, cameră -->
       <div class="flex flex-wrap gap-6 mb-6">
         <select class="py-2 px-1" v-model="form.day">
           <option v-for="d in days" :key="d">{{ d }}</option>
         </select>
         <select class="py-2 px-1" v-model="form.slotId">
-          <option v-for="s in timeSlots" :key="s.id" :value="s.id">
+          <option v-for="(s, index) in timeSlots" :key="index" :value="`${s.start} - ${s.end}`">
             {{ s.start }} - {{ s.end }}
           </option>
         </select>
         <select class="py-2 px-1" v-model="form.group">
-          <option v-for="g in groups" :key="g">{{ g }}</option>
+          <option v-for="g in groups" :key="g.id">Semina: {{ g.semian }}; Grupa: {{ g.name }} </option>
         </select>
         <select class="py-2 px-1" v-model="form.professor">
-          <option v-for="p in professors" :key="p">{{ p }}</option>
+          <option v-for="p in teachers" :key="p.id">{{ p.name }}</option>
         </select>
         <select class="py-2 px-1" v-model="form.discipline">
-          <option v-for="d in disciplines" :key="d">{{ d }}</option>
+          <option v-for="d in disciplines" :key="d.id">{{ d.name }}</option>
         </select>
         <select class="py-2 px-1" v-model="form.type">
           <option v-for="t in activityTypes" :key="t">{{ t }}</option>
         </select>
         <select class="py-2 px-1" v-model="form.room">
-          <option v-for="r in rooms" :key="r.name">{{ r.name }}</option>
+          <option v-for="r in rooms" :key="r.id">{{ r.name }}</option>
         </select>
       </div>
       <button
@@ -38,14 +39,32 @@
       </button>
     </form>
 
-    <h2 class="text-xl font-bold text-gray-700 mb-4">Orar</h2>
+    <h2 v-if="years.length > 0" class="text-xl font-bold text-gray-700 mb-4">Selectează Anul</h2>
+    <div class="flex space-x-4 mb-6">
+      <button
+        v-for="year in filteredYears"
+        :key="year.id"
+        :class="[
+          'py-2 px-4 border rounded-md text-lg',
+          selectedYear === year.id ? 'bg-blue-500 text-white' : 'bg-transparent text-blue-500 border-blue-500'
+        ]"
+        @click="selectYear(year.id)"
+      >
+        {{ year.name }}
+      </button>
+    </div>
+
     <div class="grid grid-cols-6 gap-px text-gray-800 border border-blue-300">
       <div class="bg-blue-100 font-bold text-gray-700 p-2">Ora</div>
-      <div v-for="day in days" :key="day" class="bg-blue-100 text-gray-700 font-bold p-2">
+      <div
+        v-for="day in days"
+        :key="day"
+        class="bg-blue-100 text-gray-700 font-bold p-2"
+      >
         {{ day }}
       </div>
 
-      <div v-for="slot in timeSlots" :key="slot.id" class="contents">
+      <div v-for="(slot, index) in timeSlots" :key="index" class="contents">
         <div class="bg-blue-100 p-2 text-sm">
           {{ slot.start }} - {{ slot.end }}
         </div>
@@ -56,10 +75,11 @@
           class="border border-blue-300 p-2 min-h-[5rem] bg-white"
         >
           <div
-            v-for="s in sessions.filter(
-              (s) => s.day === day && s.slotId === slot.id
+            v-for="s in classSessions.filter(
+              (s) =>
+                s.day === day && s.time_slot === `${slot.start} - ${slot.end}`
             )"
-            :key="s.group + s.discipline + s.professor + s.room"
+            :key="s.discipline + s.teacher + s.room"
             class="text-sm mb-2 p-1 text-gray-700 rounded bg-blue-100 relative"
           >
             <button
@@ -68,9 +88,8 @@
             >
               x
             </button>
-            <strong>{{ s.discipline }}</strong> ({{ s.type }})<br />
-            {{ s.group }}<br />
-            {{ s.professor }}<br />
+            <strong>{{ s.discipline }}</strong> ({{ s.class_type }})<br />
+            {{ s.teacher }}<br />
             <em>{{ s.room }}</em>
           </div>
         </div>
@@ -82,85 +101,87 @@
 <script setup lang="ts">
 const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 const timeSlots = [
-  { id: 1, start: "08:00", end: "10:00" },
-  { id: 2, start: "10:00", end: "12:00" },
-  { id: 3, start: "12:00", end: "14:00" },
-  { id: 4, start: "14:00", end: "16:00" },
-  { id: 5, start: "16:00", end: "18:00" },
+  { start: "08:00", end: "10:00" },
+  { start: "10:00", end: "12:00" },
+  { start: "12:00", end: "14:00" },
+  { start: "14:00", end: "16:00" },
+  { start: "16:00", end: "18:00" },
+  { start: "18:00", end: "20:00" },
 ];
+const activityTypes = ["course", "laboratory", "seminar", "seminar/laboratory"];
 
-const groups = ["Semian A", "Semian B", "Semian C"];
-const professors = ["Prof. Smith", "Dr. Johnson", "Ms. Brown"];
-const disciplines = ["Mathematics", "Physics", "Computer Science"];
-const rooms = [
-  { name: "Room 101", type: "curs" },
-  { name: "Lab 1", type: "laborator" },
-  { name: "Seminar Room 3", type: "seminar" },
-];
-const activityTypes = ["curs", "seminar", "laborator"];
+const disciplinesStore = useDisciplinesStore();
+const groupsStore = useGroupsStore();
+const teachersStore = useTeachersStore();
+const roomsStore = useRoomsStore();
+const classSessionsStore = useClassSessionsStore();
+const timeSlotsStore = useTimeSlotsStore();
+const yearsStore = useYearsStore();
 
-const sessions = ref<any[]>([]);
+const { years } = storeToRefs(yearsStore);
+const { classSessions } = storeToRefs(classSessionsStore);
+const { disciplines } = storeToRefs(disciplinesStore);
+const { teachers } = storeToRefs(teachersStore);
+const { groups } = storeToRefs(groupsStore);
+const { rooms } = storeToRefs(roomsStore);
+const { slots } = storeToRefs(timeSlotsStore);
 
-const form = reactive({
-  day: "Monday",
-  slotId: 1,
-  group: groups[0],
-  professor: professors[0],
-  discipline: disciplines[0],
-  room: rooms[0].name,
-  type: "curs",
+const selectedYear = ref<number | null>(null);
+
+onMounted(async () => {
+  await timeSlotsStore.fetchTimeSlots();
+  await yearsStore.fetchYears();
+  await disciplinesStore.fetchDisciplines(),
+  await groupsStore.fetchGroups(),
+  await teachersStore.fetchTeachers(),
+  await roomsStore.fetchRooms(),
+  await classSessionsStore.fetchClassSessions({});
 });
 
-const addSession = () => {
-  // Validare duplicat absolut (aceeași sesiune deja adăugată complet)
-  const duplicate = sessions.value.find(s =>
-    s.day === form.day &&
-    s.slotId === form.slotId &&
-    s.group === form.group &&
-    s.professor === form.professor &&
-    s.discipline === form.discipline &&
-    s.type === form.type &&
-    s.room === form.room
-  )
+const filteredYears = computed(() => {
+  const allYear = { id: 0, name: "All" };
+  return years && years.value.length > 0 ? [allYear, ...years.value] : [allYear]; 
+});
 
-  if (duplicate) {
-    alert('Această sesiune este deja adăugată.')
-    return
+
+const form = reactive({
+  day: "",
+  slotId: "",
+  group: "",
+  professor: "",
+  discipline: "",
+  room: "",
+  type: "",
+});
+
+const selectYear = async(yearId: number) => {
+  selectedYear.value = yearId;
+  if(yearId === 0){
+    await classSessionsStore.fetchClassSessions({}); 
+    return;
   }
+  await classSessionsStore.fetchClassSessions({year_id:yearId}); 
+};
 
-  // Validare: aceeași grupă nu poate avea de două ori aceeași disciplină + același tip de activitate
-  const alreadyScheduled = sessions.value.find(s =>
-    s.group === form.group &&
-    s.discipline === form.discipline &&
-    s.type === form.type
-  )
+const addSession = async () => {
+  const sessionData = {
+    discipline_id: disciplines.value.find((d) => d.name === form.discipline)
+      ?.id,
+    teacher_id: teachers.value.find((t) => t.name === form.professor)?.id ?? 1,
+    room_id: rooms.value.find((t) => t.name === form.room)?.id ?? 1,
+    time_slot_id:
+      slots.value.find(
+        (s) =>
+          s.day === form.day &&
+          form.slotId === `${s.start_time} - ${s.end_time}`
+      )?.id ?? 1,
+    class_type: form.type,
+  };
 
-  if (alreadyScheduled) {
-    alert(`Grupa ${form.group} are deja această activitate (${form.discipline} – ${form.type}) programată.`)
-    return
-  }
-
-  // Validare existentă: conflict de profesor, grupă, sală în același slot
-  const conflict = sessions.value.find(
-    s =>
-      s.day === form.day &&
-      s.slotId === form.slotId &&
-      (
-        s.professor === form.professor ||
-        s.group === form.group ||
-        s.room === form.room
-      )
-  )
-
-  if (conflict) {
-    alert("Conflict detectat: profesorul, grupa sau sala este deja ocupată în acest interval.")
-    return
-  }
-
-  sessions.value.push({ ...form })
-}
+  await classSessionsStore.addClassSession(sessionData);
+};
 
 const removeSession = (sessionToRemove: any) => {
-  sessions.value = sessions.value.filter((s) => s !== sessionToRemove);
+  classSessionsStore.deleteClassSession(sessionToRemove.id);
 };
 </script>

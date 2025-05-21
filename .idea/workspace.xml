@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="311894ec-cd55-46e2-a19f-ac5b4df65439" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/TimeTable.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/TimeTable.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TimeTable-backend/app/logic/restrictions.py" beforeDir="false" afterPath="$PROJECT_DIR$/TimeTable-backend/app/logic/restrictions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TimeTable-backend/app/models/class_session.py" beforeDir="false" afterPath="$PROJECT_DIR$/TimeTable-backend/app/models/class_session.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TimeTable-backend/app/models/discipline.py" beforeDir="false" afterPath="$PROJECT_DIR$/TimeTable-backend/app/models/discipline.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TimeTable-backend/app/models/discipline_teacher.py" beforeDir="false" afterPath="$PROJECT_DIR$/TimeTable-backend/app/models/discipline_teacher.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TimeTable-backend/app/models/group.py" beforeDir="false" afterPath="$PROJECT_DIR$/TimeTable-backend/app/models/group.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TimeTable-backend/app/models/room.py" beforeDir="false" afterPath="$PROJECT_DIR$/TimeTable-backend/app/models/room.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TimeTable-backend/app/models/semian.py" beforeDir="false" afterPath="$PROJECT_DIR$/TimeTable-backend/app/models/semian.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TimeTable-backend/app/models/teacher.py" beforeDir="false" afterPath="$PROJECT_DIR$/TimeTable-backend/app/models/teacher.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TimeTable-backend/app/models/year.py" beforeDir="false" afterPath="$PROJECT_DIR$/TimeTable-backend/app/models/year.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="FlaskConsoleOptions" custom-start-script="import sys&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo&#10;locals().update(ScriptInfo(create_app=None).load_app().make_shell_context())&#10;print(&quot;Python %s on %s\nApp: %s [%s]\nInstance: %s&quot; % (sys.version, sys.platform, app.import_name, app.env, app.instance_path))">
+    <envs>
+      <env key="FLASK_APP" value="app" />
+    </envs>
+    <option name="myCustomStartScript" value="import sys&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo&#10;locals().update(ScriptInfo(create_app=None).load_app().make_shell_context())&#10;print(&quot;Python %s on %s\nApp: %s [%s]\nInstance: %s&quot; % (sys.version, sys.platform, app.import_name, app.env, app.instance_path))" />
+    <option name="myEnvs">
+      <map>
+        <entry key="FLASK_APP" value="app" />
+      </map>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;olarubianca6&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/olarubianca6/TimeTable.git&quot;,
+    &quot;accountId&quot;: &quot;b0dbd3af-fcb2-4669-9a3a-84dfa3648aeb&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 6
+}</component>
+  <component name="ProjectId" id="2wqmxLvK7zx4WJGi4Od34Y1CPGO" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python tests.Python tests in test-conflict-checker.py.executor": "Run",
+    "Python tests.Python tests in test-models.py.executor": "Run",
+    "Python tests.Python tests in test-restrictions.py.executor": "Run",
+    "Python.conflict_checker.executor": "Run",
+    "Python.test-models.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable",
+    "ts.external.directory.path": "/Applications/PyCharm.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/TimeTable-backend/tests/logic-tests" />
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-PY-242.23339.19" />
+        <option value="bundled-python-sdk-0029f7779945-399fe30bd8c1-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-242.23339.19" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="311894ec-cd55-46e2-a19f-ac5b4df65439" name="Changes" comment="" />
+      <created>1746777723890</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1746777723890</updated>
+      <workItem from="1746777725066" duration="668000" />
+      <workItem from="1746778399886" duration="18000" />
+      <workItem from="1746778421038" duration="582000" />
+      <workItem from="1746779021750" duration="48000" />
+      <workItem from="1746779075968" duration="52000" />
+      <workItem from="1746779131050" duration="555000" />
+      <workItem from="1746779916465" duration="21000" />
+      <workItem from="1746955399664" duration="211000" />
+      <workItem from="1747152996954" duration="1042000" />
+      <workItem from="1747568557759" duration="2946000" />
+      <workItem from="1747646881760" duration="4516000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/TimeTable$conflict_checker.coverage" NAME="conflict_checker Coverage Results" MODIFIED="1747569306016" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/TimeTable-backend/app/logic" />
+    <SUITE FILE_PATH="coverage/TimeTable$.coverage" NAME=" Coverage Results" MODIFIED="1747650570333" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/TimeTable-backend/tests/logic-tests" />
+    <SUITE FILE_PATH="coverage/TimeTable$test_models.coverage" NAME="test-models Coverage Results" MODIFIED="1747650042148" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/TimeTable-backend/tests/models-tests" />
+  </component>
+</project>
