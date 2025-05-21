@@ -9,7 +9,8 @@ class Teacher(db.Model):
     discipline_links = db.relationship(
         'DisciplineTeacher',
         back_populates='teacher',
-        cascade='all, delete-orphan'
+        cascade='all, delete-orphan',
+        passive_deletes=True
     )
 
     def to_dict(self):
