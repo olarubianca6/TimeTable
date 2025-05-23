@@ -16,9 +16,11 @@ from app.extension import db
 
 def create_app():
     app = Flask(__name__, template_folder='templates')
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'xxxxxxx'
+
     CORS(app)
-    app.config[
-        'SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres.ihewwagfkrolwjvmxskg:Timetable123@aws-0-eu-central-1.pooler.supabase.com:5432/postgres'
+   
+
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     db.init_app(app)
