@@ -12,6 +12,7 @@ export const useClassSessionsStore = defineStore('classSessions', {
             method: 'GET', 
             params: payload,
           }) as  Timetable[] ;
+        assert(Array.isArray(response), "fetchClassSessions: API must return an array");
         if (response) {
           this.classSessions = response;
         } else {

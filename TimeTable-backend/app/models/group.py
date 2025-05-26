@@ -11,4 +11,16 @@ class Group(db.Model):
     disciplines = db.relationship('Discipline', back_populates='group', cascade='all, delete-orphan', passive_deletes=True)
 
     def to_dict(self):
-        return {'id': self.id, 'name': self.name, 'year_id': self.year_id, 'semian_id': self.semian_id}
+        return {
+            'id': self.id,
+            'name': self.name,
+            'year': {
+                'id': self.year.id,
+                'name': self.year.name
+            } if self.year else None,
+            'semian': {
+                'id': self.semian.id,
+                'name': self.semian.name
+            } if self.semian else None
+        }
+

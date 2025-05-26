@@ -82,6 +82,8 @@ def add_class_session():
     room_id = data.get('room_id')
     time_slot_id = data.get('time_slot_id')
     class_type = data.get('class_type')
+    group_id = data.get('group_id')
+    semian_id = data.get('semian_id')
 
     discipline = Discipline.query.get(discipline_id)
     teacher = Teacher.query.get(teacher_id)
@@ -98,12 +100,15 @@ def add_class_session():
 
     existing_class_sessions = ClassSession.query.all()
     new_class_session = ClassSession(
-        discipline=discipline,
+        discipline_id=discipline_id,
         teacher_id=teacher_id,
         room_id=room_id,
         time_slot_id=time_slot_id,
-        class_type=class_type
+        class_type=class_type,
+        group_id=group_id,
+        semian_id=semian_id
     )
+    
     if existing_class_sessions:
         conflict_response, status_code = check_conflicts(existing_class_sessions, new_class_session)
         if conflict_response:

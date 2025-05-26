@@ -8,8 +8,8 @@ export interface Discipline {
 export interface Group {
   id: number;
   name: string;
-  year_id: number;
-  semian: string;
+  year: Years;
+  semian: Semian;
 }
 
 export interface Teacher {
@@ -39,6 +39,9 @@ export interface ClassSession {
   room_id: number;
   time_slot_id: number;
   class_type: string;
+  group_id?: string;
+  year_id?: string;
+  semian_id?: string;
 }
 
 export interface TimeSlots {
@@ -49,6 +52,11 @@ export interface TimeSlots {
 }
 
 export interface Years {
+  id: number;
+  name: string;
+}
+
+export interface Semian {
   id: number;
   name: string;
 }

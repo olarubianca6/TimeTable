@@ -15,7 +15,7 @@
           </option>
         </select>
         <select class="py-2 px-1" v-model="form.group">
-          <option v-for="g in groups" :key="g.id">Semina: {{ g.semian }}; Grupa: {{ g.name }} </option>
+          <option v-for="g in groups" :key="g.id" :value="g">An: {{ g.year.name }}; Semina: {{ g.semian.name }}; Grupa: {{ g.name }} </option>
         </select>
         <select class="py-2 px-1" v-model="form.professor">
           <option v-for="p in teachers" :key="p.id">{{ p.name }}</option>
@@ -147,7 +147,7 @@ const filteredYears = computed(() => {
 const form = reactive({
   day: "",
   slotId: "",
-  group: "",
+  group: null as Group | null,
   professor: "",
   discipline: "",
   room: "",
@@ -176,6 +176,9 @@ const addSession = async () => {
           form.slotId === `${s.start_time} - ${s.end_time}`
       )?.id ?? 1,
     class_type: form.type,
+    semian_id: form.group?.semian.id,
+    year_id:form.group?.year.id,
+    group_id: form.group?.id
   };
 
   await classSessionsStore.addClassSession(sessionData);
