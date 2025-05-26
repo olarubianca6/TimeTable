@@ -12,14 +12,16 @@ from app.routes.group_routes import groups_bp
 from app.routes.class_session_routes import class_session_bp
 from app.routes.time_slot_routes import time_bp
 from app.extension import db
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 
 def create_app():
     app = Flask(__name__, template_folder='templates')
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'xxxxxxx'
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI')
 
     CORS(app)
-   
 
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
