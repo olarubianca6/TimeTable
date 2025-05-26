@@ -5,7 +5,7 @@ class Year(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
 
-    semian = db.relationship('Semian', back_populates='year', cascade='all, delete-orphan', passive_deletes=True)
+    semiani = db.relationship('Semian', back_populates='year', cascade='all, delete-orphan', passive_deletes=True)
     groups = db.relationship('Group', backref='year', cascade='all, delete-orphan', passive_deletes=True)
     disciplines = db.relationship('Discipline', back_populates='year', cascade='all, delete-orphan', passive_deletes=True)
 

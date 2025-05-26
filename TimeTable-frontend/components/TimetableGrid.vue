@@ -5,7 +5,6 @@
       class="flex flex-col w-full items-center mb-2 justify-center"
       @submit.prevent="addSession"
     >
-      <!-- Aici sunt selectările pentru zi, slot, grupă, profesor, disciplină, tip activitate, cameră -->
       <div class="flex flex-wrap gap-6 mb-6">
         <select class="py-2 px-1" v-model="form.day">
           <option v-for="d in days" :key="d">{{ d }}</option>
@@ -83,6 +82,7 @@
             class="text-sm mb-2 p-1 text-gray-700 rounded bg-blue-100 relative"
           >
             <button
+              aria-label="Remove session"
               class="absolute top-1 right-1 text-gray-600 hover:text-red-800 text-xs"
               @click="removeSession(s)"
             >
