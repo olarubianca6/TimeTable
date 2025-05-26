@@ -1,7 +1,7 @@
 from datetime import time
 
 import pytest
-from app.models import Room, Teacher
+from app.models import Room, Teacher, Discipline
 from app.logic.restrictions import match_room_class_type, valid_class_time
 
 
