@@ -130,13 +130,26 @@ const selectedYear = ref<number | null>(0);
 
 onMounted(async () => {
   await timeSlotsStore.fetchTimeSlots();
+  assert(slots.value.length > 0, "Nu s-au încărcat intervalele orare");
+
   await yearsStore.fetchYears();
-  await disciplinesStore.fetchDisciplines(),
-  await groupsStore.fetchGroups(),
-  await teachersStore.fetchTeachers(),
-  await roomsStore.fetchRooms(),
+  assert(years.value.length > 0, "Nu s-au încărcat anii");
+
+  await disciplinesStore.fetchDisciplines();
+  assert(disciplines.value.length > 0, "Nu s-au încărcat disciplinele");
+
+  await groupsStore.fetchGroups();
+  assert(groups.value.length > 0, "Nu s-au încărcat grupele");
+
+  await teachersStore.fetchTeachers();
+  assert(teachers.value.length > 0, "Nu s-au încărcat profesorii");
+
+  await roomsStore.fetchRooms();
+  assert(rooms.value.length > 0, "Nu s-au încărcat sălile");
+
   await classSessionsStore.fetchClassSessions({});
 });
+
 
 const filteredYears = computed(() => {
   const allYear = { id: 0, name: "All" };
@@ -212,6 +225,8 @@ const addSession = async () => {
 };
 
 const removeSession = (sessionToRemove: any) => {
+  assert(typeof sessionToRemove?.id === "number", "ID-ul sesiunii este invalid");
   classSessionsStore.deleteClassSession(sessionToRemove.id);
 };
+
 </script>
