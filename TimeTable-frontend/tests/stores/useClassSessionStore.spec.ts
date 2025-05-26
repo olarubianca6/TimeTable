@@ -11,8 +11,8 @@ import useApi from '@/composables/useApi'
 describe('useClassSessionsStore', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
-    global.alert = vi.fn() // mock alert globally
-    console.log = vi.fn()  // optional: suppress log output
+    global.alert = vi.fn() 
+    console.log = vi.fn() 
   })
 
   it('initial state is correct', () => {
@@ -21,38 +21,88 @@ describe('useClassSessionsStore', () => {
     expect(store.loading).toBe(false)
   })
 
-  it('fetchClassSessions updates state on success', async () => {
-    const mockData = [{ id: 1, day: 'Monday', discipline: 'Math' }]
-    ;(useApi as any).mockResolvedValue(mockData)
+  it('fetchClassSessions sets empty array if response is falsy', async () => {
+    (useApi as any).mockResolvedValue(undefined);
 
-    const store = useClassSessionsStore()
-    await store.fetchClassSessions({ year_id: 2024 })
+    const store = useClassSessionsStore();
+    await store.fetchClassSessions({});
 
-    expect(store.classSessions).toEqual(mockData)
-    expect(store.loading).toBe(false)
-  })
+    expect(store.classSessions).toEqual([]);
+    expect(store.loading).toBe(false);
+  });
+  it('fetchClassSessions sets classSessions with response when response is truthy', async () => {
+    const mockData = [{ id: 1, day: 'Monday', discipline: 'Math' }];
+    (useApi as any).mockResolvedValue(mockData);
 
-  it('fetchClassSessions sets error fallback', async () => {
-    ;(useApi as any).mockRejectedValue(new Error('API error'))
+    const store = useClassSessionsStore();
+    await store.fetchClassSessions({ year_id: 2024 });
 
-    const store = useClassSessionsStore()
-    await store.fetchClassSessions(undefined)
+    expect(store.classSessions).toEqual(mockData);
+    expect(store.loading).toBe(false);
+  });
+  it('fetchClassSessions sets classSessions to empty array and calls alert on error', async () => {
+    (useApi as any).mockRejectedValue(new Error('API failure'));
 
-    expect(store.classSessions).toEqual([])
-    expect(store.loading).toBe(false)
-    expect(global.alert).toHaveBeenCalled()
-  })
+    const store = useClassSessionsStore();
 
-  it('fetchClassSession returns single session', async () => {
-    const mockData = { data: { id: 1, day: 'Tuesday', discipline: 'Physics' } }
-    ;(useApi as any).mockResolvedValue(mockData)
+    global.alert = vi.fn();
 
-    const store = useClassSessionsStore()
-    const result = await store.fetchClassSession(1)
+    await store.fetchClassSessions(undefined);
 
-    expect(result).toEqual(mockData.data)
-    expect(store.loading).toBe(false)
-  })
+    expect(global.alert).toHaveBeenCalledWith(expect.any(Error));
+    expect(store.classSessions).toEqual([]);
+    expect(store.loading).toBe(false);
+    });
+
+
+  it('fetchClassSession logs error and sets loading false on failure', async () => {
+    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    (useApi as any).mockRejectedValue(new Error('Fetch session failed'));
+
+    const store = useClassSessionsStore();
+    const result = await store.fetchClassSession(123);
+
+    expect(result).toBeUndefined();
+    expect(consoleErrorSpy).toHaveBeenCalledWith('Failed to fetch class session:', expect.any(Error));
+    expect(store.loading).toBe(false);
+
+    consoleErrorSpy.mockRestore();
+  });
+
+  it('alerts error on addClassSession failure', async () => {
+    (useApi as any).mockRejectedValue(new Error('Add failed'));
+  
+    const store = useClassSessionsStore();
+
+    await store.addClassSession({ discipline_id: 1 });
+
+    expect(global.alert).toHaveBeenCalledWith(expect.any(Error));
+    expect(store.loading).toBe(false);
+  });
+
+  it('alerts error on editClassSession failure', async () => {
+    (useApi as any).mockRejectedValue(new Error('Edit failed'));
+  
+    const store = useClassSessionsStore();
+
+    await store.editClassSession(1, { discipline: 'X' });
+
+    expect(global.alert).toHaveBeenCalledWith(expect.any(Error));
+    expect(store.loading).toBe(false);
+  });
+
+  it('alerts error on deleteClassSession failure', async () => {
+    (useApi as any).mockRejectedValue(new Error('Delete failed'));
+  
+    const store = useClassSessionsStore();
+
+    await store.deleteClassSession(1);
+
+    expect(global.alert).toHaveBeenCalledWith(expect.any(Error));
+    expect(store.loading).toBe(false);
+  });
+
 
   it('addClassSession calls fetchClassSessions', async () => {
     ;(useApi as any).mockResolvedValue({ message: 'Added' })

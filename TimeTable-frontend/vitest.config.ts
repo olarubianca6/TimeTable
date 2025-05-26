@@ -10,6 +10,10 @@ export default defineVitestConfig({
           indexedDb: true,
         }
       }
-    }
+    },
+    coverage: {
+      reporter: ['text', 'html'], 
+      reportsDirectory: './coverage',
+    },
   }
 })

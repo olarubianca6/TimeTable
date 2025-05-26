@@ -31,7 +31,7 @@ describe('useDisciplinesStore', () => {
   })
 
   it('fetchDisciplines sets empty array on failure', async () => {
-    ;(useApi as any).mockRejectedValue(new Error('API error'))
+    ;(useApi as any).mockRejectedValue(new Error('Test API error'))
 
     const store = useDisciplinesStore()
     await store.fetchDisciplines()

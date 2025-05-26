@@ -33,7 +33,7 @@ describe('useYearsStore', () => {
   })
 
   it('fetchYears sets error on failure', async () => {
-    ;(useApi as any).mockRejectedValue(new Error('API error'))
+    ;(useApi as any).mockRejectedValue(new Error('Test API error'))
 
     const store = useYearsStore()
     await store.fetchYears()

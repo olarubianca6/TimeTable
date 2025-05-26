@@ -31,7 +31,7 @@ describe('useTimetableStore', () => {
   })
 
   it('fetchTimetable sets empty array on failure', async () => {
-    ;(useApi as any).mockRejectedValue(new Error('API error'))
+    ;(useApi as any).mockRejectedValue(new Error('Test API error'))
 
     const store = useTimetableStore()
     await store.fetchTimetable()

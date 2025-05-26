@@ -31,7 +31,7 @@ describe('useGroupsStore', () => {
   })
 
   it('fetchGroups sets empty array on failure', async () => {
-    ;(useApi as any).mockRejectedValue(new Error('API error'))
+    ;(useApi as any).mockRejectedValue(new Error('Test API error'))
 
     const store = useGroupsStore()
     await store.fetchGroups()
