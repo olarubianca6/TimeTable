@@ -10,8 +10,11 @@ export default async function useApi<T, U>(
   opts: Partial<Parameters<typeof $fetch<T>>[1]>,
 ): Promise<T | U | undefined> {
   const config = useRuntimeConfig();
-  
-  // Headers without authorization
+
+  // Aserții defensive
+  assert(typeof request === "string" && request.length > 0, "API request path must be a non-empty string");
+  assert(typeof config.public.apiUrl === "string" && config.public.apiUrl.length > 0, "Base API URL is missing in runtime config");
+
   const headers = {
     ...opts?.headers,
   };

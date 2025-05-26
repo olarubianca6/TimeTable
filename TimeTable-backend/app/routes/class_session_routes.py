@@ -108,7 +108,7 @@ def add_class_session():
         group_id=group_id,
         semian_id=semian_id
     )
-    
+
     if existing_class_sessions:
         conflict_response, status_code = check_conflicts(existing_class_sessions, new_class_session)
         if conflict_response:

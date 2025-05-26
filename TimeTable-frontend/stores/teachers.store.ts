@@ -7,13 +7,15 @@ export const useTeachersStore = defineStore('teachers', {
     async fetchTeachers() {
       this.loading = true;
       try {
-        const response = await useApi('/teachers', { method: 'GET' }) as { data: Teacher[]};
+        const response = await useApi('/teachers', { method: 'GET' }) as Teacher[];
 
-        if (response) {
-          this.teachers = response;
-        } else {
-          this.teachers = [];
-        }
+        assert(Array.isArray(response), "fetchTeachers: response must be an array");
+        response.forEach((teacher, index) => {
+          assert(typeof teacher.id === 'number', `Teacher at index ${index} must have a numeric id`);
+          assert(typeof teacher.name === 'string', `Teacher at index ${index} must have a name`);
+        });
+
+        this.teachers = response;
       } catch (error) {
         console.error('Failed to fetch teachers:', error);
         this.teachers = [];

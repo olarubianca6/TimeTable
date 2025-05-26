@@ -39,9 +39,9 @@ export interface ClassSession {
   room_id: number;
   time_slot_id: number;
   class_type: string;
-  group_id?: string;
-  year_id?: string;
-  semian_id?: string;
+  group_id?: number;
+  year_id?: number;
+  semian_id?: number;
 }
 
 export interface TimeSlots {

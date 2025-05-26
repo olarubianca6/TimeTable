@@ -7,13 +7,16 @@ export const useRoomsStore = defineStore('rooms', {
     async fetchRooms() {
       this.loading = true;
       try {
-        const response = await useApi('/rooms', { method: 'GET' }) as { data: Room[] };
+        const response = await useApi('/rooms', { method: 'GET' }) as Room[];
 
-        if (response) {
-          this.rooms = response;
-        } else {
-          this.rooms = [];
-        }
+        assert(Array.isArray(response), "fetchRooms: response must be an array");
+        response.forEach((room, index) => {
+          assert(typeof room.id === 'number', `Room at index ${index} must have a numeric id`);
+          assert(typeof room.name === 'string', `Room at index ${index} must have a name`);
+          assert(typeof room.room_type === 'string', `Room at index ${index} must have a room_type`);
+        });
+
+        this.rooms = response;
       } catch (error) {
         console.error('Failed to fetch rooms:', error);
         this.rooms = [];

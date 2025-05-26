@@ -126,7 +126,7 @@ const { groups } = storeToRefs(groupsStore);
 const { rooms } = storeToRefs(roomsStore);
 const { slots } = storeToRefs(timeSlotsStore);
 
-const selectedYear = ref<number | null>(null);
+const selectedYear = ref<number | null>(0);
 
 onMounted(async () => {
   await timeSlotsStore.fetchTimeSlots();
@@ -164,6 +164,31 @@ const selectYear = async(yearId: number) => {
 };
 
 const addSession = async () => {
+  assert(form.day !== "", "Ziua nu este selectată");
+  assert(form.slotId !== "", "Intervalul orar nu este selectat");
+  assert(form.group !== null, "Grupa nu este selectată");
+  assert(form.group?.id !== undefined, "Grupa selectată nu are ID");
+  assert(form.group?.semian?.id !== undefined, "Semianul grupei este invalid");
+  assert(form.group?.year?.id !== undefined, "Anul grupei este invalid");
+  assert(form.professor !== "", "Profesorul nu este selectat");
+  assert(form.discipline !== "", "Disciplina nu este selectată");
+  assert(form.type !== "", "Tipul activității nu este selectat");
+  assert(form.room !== "", "Sala nu este selectată");
+  const timeSlot = slots.value.find(
+    (s) =>
+      s.day === form.day &&
+      form.slotId === `${s.start_time} - ${s.end_time}`
+  );
+  assert(timeSlot?.id !== undefined, "Intervalul orar nu este valid");
+
+  const discipline = disciplines.value.find((d) => d.name === form.discipline);
+  const teacher = teachers.value.find((t) => t.name === form.professor);
+  const room = rooms.value.find((r) => r.name === form.room);
+
+  assert(discipline?.id !== undefined, "Disciplina este invalidă");
+  assert(teacher?.id !== undefined, "Profesorul este invalid");
+  assert(room?.id !== undefined, "Sala este invalidă");
+
   const sessionData = {
     discipline_id: disciplines.value.find((d) => d.name === form.discipline)
       ?.id,
@@ -180,6 +205,8 @@ const addSession = async () => {
     year_id:form.group?.year.id,
     group_id: form.group?.id
   };
+
+  assert(Object.values(sessionData).every((v) => v !== undefined && v !== null), "Datele sesiunii sunt incomplete");
 
   await classSessionsStore.addClassSession(sessionData);
 };
