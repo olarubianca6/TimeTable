@@ -10,6 +10,11 @@ class Group(db.Model):
     semian = db.relationship('Semian', back_populates='groups', passive_deletes=True)
     disciplines = db.relationship('Discipline', back_populates='group', cascade='all, delete-orphan', passive_deletes=True)
 
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        assert self.name
+        assert self.year_id is not None
+
     def to_dict(self):
         return {
             'id': self.id,

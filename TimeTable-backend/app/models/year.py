@@ -9,5 +9,9 @@ class Year(db.Model):
     groups = db.relationship('Group', backref='year', cascade='all, delete-orphan', passive_deletes=True)
     disciplines = db.relationship('Discipline', back_populates='year', cascade='all, delete-orphan', passive_deletes=True)
 
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        assert self.name
+
     def to_dict(self):
         return {'id': self.id, 'name': self.name}

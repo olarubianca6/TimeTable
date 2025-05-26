@@ -17,3 +17,13 @@ class ClassSession(db.Model):
     time_slot = db.relationship('TimeSlot', passive_deletes=True)
     semian = db.relationship('Semian', passive_deletes=True)
     group = db.relationship('Group', passive_deletes=True)
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        assert self.discipline_id is not None
+        assert self.teacher_id is not None
+        assert self.room_id is not None
+        assert self.time_slot_id is not None
+        assert self.semian_id is not None
+        assert self.group_id is not None
+        assert self.class_type in ["course", "seminar", "laboratory"]
