@@ -1,5 +1,9 @@
 import unittest
 from datetime import time
+import sys
+import os
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
 from app.logic.restrictions import valid_class_time, match_room_class_type
 
 

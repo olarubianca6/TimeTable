@@ -14,15 +14,10 @@ from app.routes.time_slot_routes import time_bp
 from app.extension import db
 
 
-def create_app():
-    app = Flask(__name__, template_folder='templates')
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'xxxxxxx'
-
+def create_app(config_class="app.config.Config"):
+    app = Flask(__name__)
+    app.config.from_object(config_class)
     CORS(app)
-   
-
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
     db.init_app(app)
     app.register_blueprint(students_bp)
     app.register_blueprint(teachers_bp)

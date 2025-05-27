@@ -26,7 +26,7 @@ def group_conflict(existing_entries, new_entry):
 
     for e in existing_entries:
         if e.time_slot_id == new_entry.time_slot_id:
-            existing_group_ids = {g.id for g in e.groups}
+            existing_group_ids = {e.group_id}
             if new_group_ids & existing_group_ids:
                 return True
     return False

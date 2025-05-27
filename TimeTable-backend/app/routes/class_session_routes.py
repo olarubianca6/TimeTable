@@ -35,10 +35,11 @@ def get_all_class_sessions():
 
     response = []
     for class_session in class_sessions:
-        discipline = Discipline.query.get(class_session.discipline_id)
-        teacher = Teacher.query.get(class_session.teacher_id)
-        room = Room.query.get(class_session.room_id)
-        time_slot = TimeSlot.query.get(class_session.time_slot_id)
+        # Înlocuiește Model.query.get() cu db.session.get()
+        discipline = db.session.get(Discipline, class_session.discipline_id)
+        teacher = db.session.get(Teacher, class_session.teacher_id)
+        room = db.session.get(Room, class_session.room_id)
+        time_slot = db.session.get(TimeSlot, class_session.time_slot_id)
         time_slot_str = f"{time_slot.start_time.strftime('%H:%M')} - {time_slot.end_time.strftime('%H:%M')}" if time_slot else None
         response.append({
             'id': class_session.id,
@@ -53,14 +54,16 @@ def get_all_class_sessions():
 
 @class_session_bp.route('/class_session/<int:id>', methods=['GET'])
 def get_class_session(id):
-    class_session = ClassSession.query.get(id)
+    # Înlocuiește ClassSession.query.get() cu db.session.get()
+    class_session = db.session.get(ClassSession, id)
     if not class_session:
         return jsonify({'error': 'Class session not found'}), 404
 
-    discipline = Discipline.query.get(class_session.discipline_id)
-    teacher = Teacher.query.get(class_session.teacher_id)
-    room = Room.query.get(class_session.room_id)
-    time_slot = TimeSlot.query.get(class_session.time_slot_id)
+    # Înlocuiește toate Model.query.get() cu db.session.get()
+    discipline = db.session.get(Discipline, class_session.discipline_id)
+    teacher = db.session.get(Teacher, class_session.teacher_id)
+    room = db.session.get(Room, class_session.room_id)
+    time_slot = db.session.get(TimeSlot, class_session.time_slot_id)
 
     response = {
         'id': class_session.id,
@@ -83,10 +86,11 @@ def add_class_session():
     time_slot_id = data.get('time_slot_id')
     class_type = data.get('class_type')
 
-    discipline = Discipline.query.get(discipline_id)
-    teacher = Teacher.query.get(teacher_id)
-    room = Room.query.get(room_id)
-    time_slot = TimeSlot.query.get(time_slot_id)
+    # Înlocuiește toate Model.query.get() cu db.session.get()
+    discipline = db.session.get(Discipline, discipline_id)
+    teacher = db.session.get(Teacher, teacher_id)
+    room = db.session.get(Room, room_id)
+    time_slot = db.session.get(TimeSlot, time_slot_id)
 
     if not discipline or not teacher or not room or not time_slot:
         return jsonify({'error': 'Invalid data provided'}), 400
@@ -118,7 +122,8 @@ def add_class_session():
 def edit_class_session(id):
     data = request.get_json()
 
-    class_session = ClassSession.query.get(id)
+    # Înlocuiește ClassSession.query.get() cu db.session.get()
+    class_session = db.session.get(ClassSession, id)
     if not class_session:
         return jsonify({'error': 'Class session not found'}), 404
 
@@ -128,8 +133,9 @@ def edit_class_session(id):
     class_session.time_slot_id = data.get('time_slot_id', class_session.time_slot_id)
     class_session.class_type = data.get('class_type', class_session.class_type)
 
-    room = Room.query.get(class_session.room_id)
-    time_slot = TimeSlot.query.get(class_session.time_slot_id)
+    # Înlocuiește Model.query.get() cu db.session.get()
+    room = db.session.get(Room, class_session.room_id)
+    time_slot = db.session.get(TimeSlot, class_session.time_slot_id)
 
     if not valid_class_time(time_slot.day, time_slot.hour):
         return jsonify({'error': 'Invalid class time'}), 400
@@ -147,7 +153,8 @@ def edit_class_session(id):
 
 @class_session_bp.route('/delete_class_session/<int:id>', methods=['DELETE'])
 def delete_class_session(id):
-    class_session = ClassSession.query.get(id)
+    # Înlocuiește ClassSession.query.get() cu db.session.get()
+    class_session = db.session.get(ClassSession, id)
     if not class_session:
         return jsonify({'error': 'Class session not found'}), 404
 
