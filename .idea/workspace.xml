@@ -5,9 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="311894ec-cd55-46e2-a19f-ac5b4df65439" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/TimeTable.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/TimeTable.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TimeTable-backend/tests/assertion-tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/TimeTable-backend/tests/assertion-tests.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -119,6 +117,8 @@
       <workItem from="1747646881760" duration="4516000" />
       <workItem from="1747996687720" duration="2322000" />
       <workItem from="1747999201450" duration="128000" />
+      <workItem from="1748279199115" duration="65000" />
+      <workItem from="1748440632770" duration="331000" />
     </task>
     <servers />
   </component>
