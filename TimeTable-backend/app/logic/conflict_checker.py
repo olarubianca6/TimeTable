@@ -36,17 +36,14 @@ def group_conflict(existing_entries, new_entry):
     new_discipline = Discipline.query.get(new_entry.discipline_id)
     assert new_discipline is not None, "discipline must not be none"
 
-    if not new_discipline.groups:
+    if new_discipline.group is None:
         return False
 
-    new_group_ids = {g.id for g in new_discipline.groups}
+    new_group_id = new_discipline.group.id
     for e in existing_entries:
-        if e.time_slot_id == new_entry.time_slot_id:
-            existing_group_ids = {e.group_id}
-            if new_group_ids & existing_group_ids:
-                return True
+        if e.time_slot_id == new_entry.time_slot_id and e.group_id == new_group_id:
+            return True
     return False
-
 
 def semian_conflict(existing_entries, new_entry):
     assert existing_entries is not None, "existing_entries must not be none"
