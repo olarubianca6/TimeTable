@@ -28,10 +28,10 @@ def create_app(config_class="app.config.Config"):
     app.register_blueprint(groups_bp)
     app.register_blueprint(class_session_bp)
     app.register_blueprint(timetable_bp)
-    
+
     with app.app_context():
-        from app.models import Student, Teacher, Discipline, Room, TimeSlot, ClassSession, Group, Year, DisciplineTeacher
+        from app.models import Student, Teacher, Discipline, Room, TimeSlot, ClassSession, Group, Year, \
+            DisciplineTeacher
         db.create_all()
 
     return app
-
